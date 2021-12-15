@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js" integrity="sha512-xQBQYt9UcgblF6aCMrwU1NkVA7HCXaSN2oq0so80KO+y68M+n64FOcqgav4igHe6D5ObBLIf68DWv+gfBowczg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="navigation">
+        <a href="/overview" id="logo">
+            Fonts<span>.intera.dev</span>
+        </a>
+    </div>
+    <div id="contents">
+        <div id="top">
+            <input type="text" value="{name}">
+        </div>
+        <div id="previews"></div>
+        <div id="alphabet">
+            <p>
+                <span style="opacity: 0.4; font-size: 25px; margin-top: -25px; font-weight: 700">ALPHABET:</span><br>
+
+                ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+                abcdefghijklmnobqrstuvwxyz<br>
+                0123456789&#60;&#62;[]{}();:,.-<br>
+                !"§$%&/=?|@€+*~#'–
+            </p>
+        </div>
+        <div id="download">
+            <h1>Download</h1>
+            <div>
+            <div id="left">
+                <h2>CSS</h2>
+                <pre>@import url(https://fonts.intera.dev/
+_/{url_name})
+
+<span style="opacity: 0.6">/* You customize the css. */</span>
+@import url(https://fonts.intera.dev/_/{url_name}<span style="text-shadow: 0px 0px 23px #9100ff">?v=400,400i</span></pre>
+            </div>
+            <div id="right">
+                <h2>Self-Hosting</h2>
+                <p>Download CSS and Font-Files.</p>
+                <a id="download-btn">Download</a>
+            </div>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+
+        import Cajax from 'https://cajax.intera.dev/3.0.4/Cajax.js'
+        import FetchRequestProvider from 'https://cajax.intera.dev/3.0.4/requestprovider/FetchRequestProvider.js'
+        const client = new Cajax()
+        client.requestProvider = new FetchRequestProvider()
+
+        client.get("/api/fonts/{url_name}")
+            .then(res=>res.json())
+            .then(res=>{
+                const previews = document.getElementById("previews")
+
+                for (const variant of res.types) {
+                    const el = document.createElement("input")
+                    el.style.fontWeight = variant.weight
+                    el.style.fontStyle = variant.style
+                    el.value = variant.name
+                    previews.appendChild(el)
+                }
+
+                document.getElementById("download-btn").addEventListener("click", async()=>{
+                    document.getElementById("download-btn").style.opacity = "0.3"
+                    var zip = new JSZip();
+                    zip.file("font.css", await (client.get("/_/"+res.url_name).then(res=>res.text()).then(res=>res.replaceAll("url(https://fonts.intera.dev/", "url(./"))));
+
+                    for (const variant of res.types) {
+                        for (const type of ["woff", "woff2", "ttf", "svg"]) {
+                            zip.file(variant[type], await (client.get("/"+res.dir+"/"+variant[type]).then(res=>res.fetchResponse.arrayBuffer())), {base64: true});
+                        }
+                    }
+                    zip.generateAsync({type:"blob"})
+                        .then(function(content) {
+                            saveAs(content, "{url_name}.zip");
+                        });
+                    document.getElementById("download-btn").style.opacity = "1"
+                })
+            })
+        const $contents = document.getElementById("contents")
+        $contents.onscroll = ()=>{
+            document.getElementById("navigation").style.opacity = $contents.scrollTop > window.innerHeight-100 ? "0" : "1"
+        }
+    </script>
+<style>
+    @import url("/_/dm+serif+display");
+    @import url("/_/dm+mono");
+    @import url("/_/{url_name}");
+
+    * {
+        padding: 0px;
+        margin: 0px;
+        box-sizing: border-box;
+    }
+    html, body {
+        height: 100%;
+    }
+    #navigation {
+        padding: 30px;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        z-index: 100000;
+        transition: 0.3s;
+    }
+    #navigation #logo {
+        color: #000000;
+        text-decoration: none;
+        font-size: 30px;
+        font-family: "DM Serif Display";
+    }
+    #navigation #logo:hover {
+        text-decoration: underline;
+    }
+    #navigation #logo span {
+        opacity: 0.3;
+    }
+
+    #contents {
+        height: 100%;
+        overflow-x: hidden;
+    }
+    #contents * {
+        font-family: "{name}";
+    }
+
+    #contents #top {
+        height: 100%;
+        position: relative;
+    }
+    #contents #top input {
+        width: 100%;
+        display: inline-block;
+        background: none;
+        border: none;
+        outline: none;
+        text-align: center;
+        font-size: 12vw;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
+    }
+
+    #contents #previews input {
+        width: 100%;
+        display: block;
+        background: none;
+        border: none;
+        outline: none;
+        padding: 15px 20px;
+        margin: 0px 40px;
+        font-size: 40px;
+    }
+    #alphabet {
+        background: #000;
+        color: #FFF;
+        padding: 100px 40px;
+        font-size: 39px;
+        margin-top: 80px;
+    }
+
+    #download {
+        padding: 40px;
+        background: #C5CAFF;
+        color: #6D7CFF;
+        font-size: 26px;
+    }
+    #download h1 {
+        font-weight: 500;
+        font-size: 54px;
+        margin-bottom: 23px;
+    }
+    #download h2 {
+        font-weight: 500;
+        font-size: 42px;
+        margin-bottom: 30px;
+    }
+    #download pre {
+        background: #222438;
+        font-size: 23px;
+        word-break: break-all;
+        padding: 18px;
+        border-radius: 25px;
+        font-family: 'DM Mono', monospace;
+        white-space: pre-wrap;
+    }
+    #download pre span {
+        white-space: pre-wrap;
+    }
+    #download #right, #download #left {
+        width: 49%;
+        padding-right: 40px;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    #download #right a {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 8px 17px;
+        background: #6D7CFF;
+        color: #c5caff;
+        border-radius: 13px;
+        cursor: pointer;
+    }
+</style>
+</body>
+</html>
