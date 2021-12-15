@@ -106,14 +106,14 @@ func main() {
 
 				if queryParam == "" || len(variants) == 0 {
 					for _, fontType := range manifest.Types {
-						builder.WriteString(fontType.ToCSS(fontFamilyName, "http://"+r.Host+"/"+fontsFolder+"/"+folderName))
+						builder.WriteString(fontType.ToCSS(fontFamilyName, "https://"+r.Host+"/"+fontsFolder+"/"+folderName))
 					}
 				} else {
 					for _, variant := range variants {
 						println(variants)
 						for _, fontType := range manifest.Types {
 							if fontType.URLName == variant {
-								builder.WriteString(fontType.ToCSS(fontFamilyName, "http://"+r.Host+"/"+fontsFolder+"/"+folderName))
+								builder.WriteString(fontType.ToCSS(fontFamilyName, "https://"+r.Host+"/"+fontsFolder+"/"+folderName))
 							}
 						}
 					}
