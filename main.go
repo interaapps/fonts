@@ -144,7 +144,7 @@ func main() {
 		fs.ServeHTTP(writer, request)
 	})))
 
-	homepage := `<style>@import url('/_/dm+serif+display'); * {font-family: 'DM Serif Display'; font-size: 28px; color: #434343; text-decoration: none; margin: 6px 20px;}</style>`
+	homepage := `<title>Home - Fonts.intera.dev</title><style>@import url('/_/dm+serif+display'); * {font-family: 'DM Serif Display'; font-size: 28px; color: #434343; text-decoration: none; margin: 6px 20px;}</style>`
 	homepage += "<a href=\"/\" style='display: block; margin-top: 50px; margin-bottom: 10px; color: #878787;'><span style='color: #000; margin: 0px;'>Fonts</span>.intera.dev</a><br>"
 	for _, manifest := range fonts {
 		homepage += "<a href=\"/" + manifest.URLName + "\">" + manifest.Name + "</a><br>"
