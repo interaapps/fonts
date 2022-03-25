@@ -21,14 +21,15 @@
         </div>
         <div id="previews"></div>
         <div id="alphabet">
-            <p>
-                <span style="opacity: 0.4; font-size: 25px; margin-top: -25px; font-weight: 700">ALPHABET:</span><br>
-
-                ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
-                abcdefghijklmnobqrstuvwxyz<br>
-                0123456789&#60;&#62;[]{}();:,.-<br>
-                !"§$%&/=?|@€+*~#'–
-            </p>
+            <script>
+                const chars = `AÁÂÄÀÅÃÆBCÇDÐEÉÊËÈFGHIÍÎÏÌJKLŁMNÑOÓÔÖÒØÕŒPÞQRSŠTUÚÛÜÙVWXYÝŸZŽaáâäàåãæbcçdðeéêëèfghiıíîïìjklłmnñoóôöòøõœpþqrsšßtuúûüùvwxyýÿzžﬁﬂªºΔΩπ0123456789⁄.,:;…!¡?¿·•*#/\\(){}[]-­–—_‚„“”‘’«»‹›"'¢¤$€ƒ₤£¥∙∕+−×÷=≠><≥≤±≈~¬^∞∫∏∑√µ∂%‰◊@&¶§©®™°|¦†ℓ‡`
+                for (const char of chars.split("")) {
+                    const el = document.createElement("div")
+                    el.textContent = char
+                    el.classList.add("char")
+                    document.getElementById("alphabet").appendChild(el)
+                }
+            </script>
         </div>
         <div id="download">
             <h1>Download</h1>
@@ -47,8 +48,7 @@
             </div>
             </div>
         </div>
-        <h3 style="padding: 30px;">Text examples:</h3>
-        <h1 style="padding: 30px; font-size: 6vh; margin-bottom: 30px">Open Source</h1>
+        <h1 style="padding: 30px; font-size: 6vh; margin-bottom: 16px; margin-top: 60px;">Examples</h1>
         <p style="padding: 30px; font-size: 4vh">
             The term "open source" was first proposed by a group of people in the free software movement who were critical of the political agenda and moral philosophy implied in the term "free software" and sought to reframe the discourse to reflect a more commercially minded position.[14] In addition, the ambiguity of the term "free software" was seen as discouraging business adoption. However, the ambiguity of the word "free" exists primarily in English as it can refer to cost. The group included Christine Peterson, Todd Anderson, Larry Augustin, Jon Hall, Sam Ockman, Michael Tiemann and Eric S. Raymond. Peterson suggested "open source" at a meeting held at Palo Alto, California, in reaction to Netscape's announcement in January 1998 of a source code release for Navigator. Linus Torvalds gave his support the following day, and Phil Hughes backed the term in Linux Journal. Richard Stallman, the founder of the free software movement, initially seemed to adopt the term, but later changed his mind.[17][18] Netscape released its source code under the Netscape Public License and later under the Mozilla Public License.[19]
             <br>
@@ -64,7 +64,7 @@
                 ABC
             </p>
 
-            <p style="min-height: 48vh;padding: 30px; width: 50%;  font-size: 1.6vh; border-left: 1px solid #000; display: inline-block; vertical-align: middle">
+            <p style="min-height: 48vh;padding: 30px; width: 48%;  font-size: 1.6vh; border-left: 1px solid #000; display: inline-block; vertical-align: middle">
                 On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.
                 <br>
                 <i>
@@ -222,6 +222,24 @@
         padding: 100px 40px;
         font-size: 39px;
         margin-top: 80px;
+    }
+
+    #alphabet .char {
+        display: inline-block;
+        font-size: 32px;
+        width:  65px;
+        height: 65px;
+        box-shadow: 1px 0 0 0 #ccc, 0 1px 0 0 #FFF, 1px 1px 0 0 #ccc, 1px 0 0 0 #FFF inset, 0 1px 0 0 #FFF inset;
+        text-align: center;
+        line-height: 65px;
+        cursor: default;
+        user-select: none;
+    }
+    #alphabet .char:hover {
+        transform: scale(1.5);
+        background: #FFF;
+        box-shadow: none;
+        color: #000;
     }
 
     #download {
