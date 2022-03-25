@@ -38,7 +38,6 @@ func (fontType *FontType) ToCSS(fontFamilyName string, folder string) string {
 		"    font-weight: " + strconv.Itoa(fontType.Weight) + ";\n" +
 		"    src: url(" + folder + "/" + fontType.WOFF2 + ") format('woff2'),\n" +
 		"         url(" + folder + "/" + fontType.WOFF + ") format('woff'),\n" +
-		"         url(" + folder + "/" + fontType.SVG + ") format('svg');\n" +
 		"         url(" + folder + "/" + fontType.TTF + ") format('truetype'),\n" +
 		"}\n\n"
 	return css
@@ -144,14 +143,11 @@ func main() {
 		fs.ServeHTTP(writer, request)
 	})))
 
-	homepage := `<title>Home - Fonts.intera.dev</title><style>@import url('/_/dm+serif+display'); * {font-family: 'DM Serif Display'; font-size: 28px; color: #434343; text-decoration: none; margin: 6px 20px;}</style>`
-	homepage += "<a href=\"/\" style='display: block; margin-top: 50px; margin-bottom: 10px; color: #878787;'><span style='color: #000; margin: 0px;'>Fonts</span>.intera.dev</a><br>"
-	for _, manifest := range fonts {
-		homepage += "<a href=\"/" + manifest.URLName + "\">" + manifest.Name + "</a><br>"
-	}
+	homePageBytes, _ := ioutil.ReadFile("static/home.html")
+	homePage := string(homePageBytes)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(homepage))
+		w.Write([]byte(homePage))
 	})
 
 	println("Starting webserver...")

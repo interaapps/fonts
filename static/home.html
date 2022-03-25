@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="fonts"></div>
+    <script type="module">
+        import Cajax from 'https://cajax.intera.dev/3.0.4/Cajax.js'
+        import FetchRequestProvider from 'https://cajax.intera.dev/3.0.4/requestprovider/FetchRequestProvider.js'
+        const client = new Cajax()
+        client.requestProvider = new FetchRequestProvider()
+
+
+        client.get("/api/fonts")
+            .then(res=>res.json())
+            .then(res=>{
+                for (const [name, font] of Object.entries(res)) {
+                    const fontA = document.createElement("a")
+
+                    fontA.innerText = font.name
+                    fontA.href = "/"+font.url_name
+                    fontA.classList.add("font")
+                    fontA.style.fontFamily = font.name;
+
+                    document.getElementById("fonts").appendChild(fontA)
+
+                    const style = document.createElement("style")
+                    const type = font.types[0]
+                    style.innerHTML = `@font-face {
+    font-family: '${font.name}';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 500;
+    src: url(/fonts/dm+mono/${type.woff2}) format('woff2'),
+         url(/fonts/dm+mono/${type.woff}) format('woff'),
+         url(/fonts/dm+mono/${type.ttf}) format('truetype'),
+}
+`
+                    let onceVis = false
+                    var observer = new IntersectionObserver(function(entries) {
+                        if(entries[0].isIntersecting === true && !onceVis) {
+                            onceVis = true
+                            document.head.appendChild(style)
+                        }
+                    }, { threshold: [0] });
+
+                    observer.observe(fontA);
+                }
+            })
+    </script>
+<style>
+    @import url("/_/dm+serif+display");
+    @import url("/_/dm+mono");
+
+    * {
+        padding: 0px;
+        margin: 0px;
+        box-sizing: border-box;
+    }
+
+    .font {
+        display: inline-block;
+        width: 25%;
+        padding: 115px 0px;
+        vertical-align: top;
+        text-align: center;
+        font-size: 50px;
+        color: #000;
+        text-decoration: none;
+        box-shadow: 1px 0 0 0 #000, 0 1px 0 0 #000, 1px 1px 0 0 #000, 1px 0 0 0 #000 inset, 0 1px 0 0 #000 inset;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    .font:hover {
+        background: #000;
+        color: #FFF;
+    }
+</style>
+</body>
+</html>
