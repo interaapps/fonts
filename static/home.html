@@ -35,7 +35,8 @@
                     var observer = new IntersectionObserver(function(entries) {
                         if(entries[0].isIntersecting === true && !onceVis) {
                             onceVis = true
-                            window.document.styleSheets[0].insertRule(`@font-face {
+                            var sheet = window.document.styleSheets[0];
+                            sheet.insertRule(`@font-face {
     font-family: '${font.name}';
     font-style: normal;
     font-display: swap;
@@ -44,7 +45,7 @@
          url(/fonts/dm+mono/${type.woff}) format('woff'),
          url(/fonts/dm+mono/${type.ttf}) format('truetype'),
 }
-`)
+`, sheet.cssRules.length)
                         }
                     }, { threshold: [0] });
 
