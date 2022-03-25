@@ -26,7 +26,7 @@
                     fontA.innerText = font.name
                     fontA.href = "/"+font.url_name
                     fontA.classList.add("font")
-                    fontA.style.fontFamily = font.name;
+                    fontA.style.fontFamily = `"${font.name}"`;
 
                     document.getElementById("fonts").appendChild(fontA)
 
@@ -35,17 +35,8 @@
                     var observer = new IntersectionObserver(function(entries) {
                         if(entries[0].isIntersecting === true && !onceVis) {
                             onceVis = true
-                            var sheet = window.document.styleSheets[0];
-                            sheet.insertRule(`@font-face {
-    font-family: '${font.name}';
-    font-style: normal;
-    font-display: swap;
-    font-weight: 500;
-    src: url(/fonts/dm+mono/${type.woff2}) format('woff2'),
-         url(/fonts/dm+mono/${type.woff}) format('woff'),
-         url(/fonts/dm+mono/${type.ttf}) format('truetype'),
-}
-`, sheet.cssRules.length)
+                            const f = new FontFace(font.name, 'url(/fonts/'+font.url_name+'/'+type.ttf+')');
+                            document.fonts.add(f)
                         }
                     }, { threshold: [0] });
 
@@ -66,7 +57,8 @@
     .font {
         display: inline-block;
         width: 25%;
-        padding: 115px 0px;
+        padding: 135px 0px;
+        line-height: 0px;
         vertical-align: top;
         text-align: center;
         font-size: 50px;
