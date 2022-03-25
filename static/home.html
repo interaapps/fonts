@@ -29,9 +29,11 @@
 
                     document.getElementById("fonts").appendChild(fontA)
 
-                    const style = document.createElement("style")
-                    const type = font.types[0]
-                    style.innerHTML = `@font-face {
+                    let onceVis = false
+                    var observer = new IntersectionObserver(function(entries) {
+                        if(entries[0].isIntersecting === true && !onceVis) {
+                            onceVis = true
+                            window.document.styleSheets[0].insertRule(`@font-face {
     font-family: '${font.name}';
     font-style: normal;
     font-display: swap;
@@ -40,12 +42,7 @@
          url(/fonts/dm+mono/${type.woff}) format('woff'),
          url(/fonts/dm+mono/${type.ttf}) format('truetype'),
 }
-`
-                    let onceVis = false
-                    var observer = new IntersectionObserver(function(entries) {
-                        if(entries[0].isIntersecting === true && !onceVis) {
-                            onceVis = true
-                            document.head.appendChild(style)
+`)
                         }
                     }, { threshold: [0] });
 
