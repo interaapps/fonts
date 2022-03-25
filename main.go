@@ -38,7 +38,7 @@ func (fontType *FontType) ToCSS(fontFamilyName string, folder string) string {
 		"    font-weight: " + strconv.Itoa(fontType.Weight) + ";\n" +
 		"    src: url(" + folder + "/" + fontType.WOFF2 + ") format('woff2'),\n" +
 		"         url(" + folder + "/" + fontType.WOFF + ") format('woff'),\n" +
-		"         url(" + folder + "/" + fontType.TTF + ") format('truetype'),\n" +
+		"         url(" + folder + "/" + fontType.TTF + ") format('truetype');\n" +
 		"}\n\n"
 	return css
 }
