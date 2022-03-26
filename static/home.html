@@ -30,7 +30,10 @@
 
                     document.getElementById("fonts").appendChild(fontA)
 
-                    const type = font.types[0]
+                    let type = font.types[0]
+                    for (const t of font.types) {
+                        if (t.weight == 400 && t.style == 'normal')
+                    }
                     let onceVis = false
                     var observer = new IntersectionObserver(function(entries) {
                         if(entries[0].isIntersecting === true && !onceVis) {
