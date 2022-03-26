@@ -33,6 +33,7 @@
                     let type = font.types[0]
                     for (const t of font.types) {
                         if (t.weight == 400 && t.style == 'normal')
+                            type = t
                     }
                     let onceVis = false
                     var observer = new IntersectionObserver(function(entries) {
